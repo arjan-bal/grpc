@@ -1600,6 +1600,26 @@ class RustLanguage(Language):
             categories=[SCALABLE, SMOKETEST],
         )
 
+        yield _ping_pong_scenario(
+            "rust_protobuf_sync_streaming_ping_pong_%s" % secstr,
+            rpc_type="STREAMING",
+            client_type="SYNC_CLIENT",
+            server_type="SYNC_SERVER",
+            async_server_threads=1,
+            secure=True,
+        )
+
+        # unconstrained_client='async' is intended (client uses goroutines)
+        yield _ping_pong_scenario(
+            "rust_protobuf_sync_streaming_qps_unconstrained_%s" % secstr,
+            rpc_type="STREAMING",
+            client_type="SYNC_CLIENT",
+            server_type="SYNC_SERVER",
+            unconstrained_client="async",
+            secure=True,
+            categories=[SCALABLE],
+        )
+
     def __str__(self):
         return "rust"
 
