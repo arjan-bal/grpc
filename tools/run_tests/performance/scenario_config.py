@@ -1568,6 +1568,62 @@ class JavaLanguage(Language):
         return "java"
 
 
+class RustLanguage(Language):
+    def worker_cmdline(self):
+        return ["tools/run_tests/performance/run_worker_go.sh"]
+
+    def worker_port_offset(self):
+        return 951
+
+    def scenarios(self):
+        secstr = "secure"
+
+        # unconstrained_client='async' is intended (client uses tokio
+        # executor)
+        yield _ping_pong_scenario(
+            "rust_protobuf_sync_unary_qps_unconstrained_%s" % secstr,
+            rpc_type="UNARY",
+            client_type="SYNC_CLIENT",
+            server_type="SYNC_SERVER",
+            unconstrained_client="async",
+            secure=True,
+            categories=[SCALABLE],
+        )
+
+        yield _ping_pong_scenario(
+            "rust_protobuf_sync_unary_ping_pong_%s" % secstr,
+            rpc_type="UNARY",
+            client_type="SYNC_CLIENT",
+            server_type="SYNC_SERVER",
+            async_server_threads=1,
+            secure=True,
+            categories=[SCALABLE, SMOKETEST],
+        )
+
+        yield _ping_pong_scenario(
+            "rust_protobuf_sync_streaming_ping_pong_%s" % secstr,
+            rpc_type="STREAMING",
+            client_type="SYNC_CLIENT",
+            server_type="SYNC_SERVER",
+            async_server_threads=1,
+            secure=True,
+        )
+
+        # unconstrained_client='async' is intended (client uses goroutines)
+        yield _ping_pong_scenario(
+            "rust_protobuf_sync_streaming_qps_unconstrained_%s" % secstr,
+            rpc_type="STREAMING",
+            client_type="SYNC_CLIENT",
+            server_type="SYNC_SERVER",
+            unconstrained_client="async",
+            secure=True,
+            categories=[SCALABLE],
+        )
+
+    def __str__(self):
+        return "rust"
+
+
 class GoLanguage(Language):
     def worker_cmdline(self):
         return ["tools/run_tests/performance/run_worker_go.sh"]
@@ -1783,4 +1839,5 @@ LANGUAGES = {
     "python_asyncio": PythonAsyncIOLanguage(),
     "go": GoLanguage(),
     "node": NodeLanguage(),  # 'node' means 'node_purejs'.
+    "rust": RustLanguage(),
 }
