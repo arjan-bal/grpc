@@ -31,8 +31,8 @@ GRPC_JAVA_REPO=grpc/grpc-java
 GRPC_JAVA_GITREF=master
 GRPC_NODE_REPO=grpc/grpc-node
 GRPC_NODE_GITREF=master
-GRPC_RUST_REPO=grpc/grpc-rust
-GRPC_RUST_GITREF=master
+GRPC_RUST_REPO=arjan-bal/tonic
+GRPC_RUST_GITREF=bench-debug
 TEST_INFRA_REPO=grpc/test-infra
 TEST_INFRA_GITREF=master
 
@@ -145,13 +145,13 @@ disableTestsRegex() {
 
 # List all languages.
 declare -A useLanguage=(
-  [c++]=1
-  [dotnet]=1
-  [go]=1
-  [java]=1
-  [node]=1
-  [python]=1
-  [ruby]=1
+  # [c++]=1
+  # [dotnet]=1
+  # [go]=1
+  # [java]=1
+  # [node]=1
+  # [python]=1
+  # [ruby]=1
   [rust]=1
 )
 
